@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Treenikirjasto: Juoksu</title>
+    <script src="workouts.js"></script>
+    <style>
+        :root {
+            /* Light Theme Variables */
+            --bg-body: #f4f7f6;
+            --bg-card: #ffffff;
+            --bg-box: #f8fafc;
+            --border-light: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent-primary: #0ea5e9; 
+            --accent-hover: #f1f5f9;
+            --bg-struct: #f0f9ff;
+            --bg-info: #e0f2fe;
+            --text-info: #0369a1;
+            --border-info: #bae6fd;
+            --graph-bg: #f1f5f9;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --radius-lg: 12px;
+            --radius-md: 8px;
+        }
+
+        /* Dark Theme Variables */
+        body.dark-mode {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-box: #0f172a;
+            --border-light: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-primary: #38bdf8;
+            --accent-hover: #334155;
+            --bg-struct: #082f49;
+            --bg-info: #0c4a6e;
+            --text-info: #7dd3fc;
+            --border-info: #0284c7;
+            --graph-bg: #0b1120;
+            
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3);
+        }
+
+        * { box-sizing: border-box; }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 20px 15px; 
+            line-height: 1.6; 
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container { max-width: 850px; margin: 0 auto; position: relative; }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+        }
+        .theme-toggle:hover { transform: scale(1.05); }
+
+        /* Header Card */
+        .header-card { 
+            background-color: var(--bg-card); 
+            padding: 30px 20px; 
+            border-radius: var(--radius-lg); 
+            box-shadow: var(--shadow-md);
+            margin-bottom: 25px; 
+            text-align: center; 
+            border-top: 5px solid var(--accent-primary);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        
+        .header-title { 
+            font-size: 26px; 
+            font-weight: 800; 
+            color: var(--text-main);
+            margin-bottom: 25px; 
+            letter-spacing: -0.5px;
+        }
+        
+        /* Inputs */
+        .inputs-row { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            flex-wrap: wrap; 
+        }
+        
+        .input-group { display: flex; flex-direction: column; align-items: flex-start; }
+        
+        .input-group label { 
+            font-size: 13px; 
+            font-weight: 600;
+            color: var(--text-muted); 
+            margin-bottom: 6px; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--bg-body);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            padding: 4px 12px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .input-wrapper:focus-within {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+        
+        input[type="text"], select { 
+            background: transparent; 
+            border: none; 
+            color: var(--text-main); 
+            padding: 8px 0; 
+            font-size: 16px; 
+            font-weight: 600;
+            width: 80px; 
+            text-align: center; 
+            outline: none;
+            font-family: inherit;
+        }
+        select { width: 140px; cursor: pointer; text-align: left; }
+        .input-wrapper span { color: var(--text-muted); font-size: 15px; margin-left: 4px; }
+
+        /* Global Info Box */
+        .global-rules { 
+            background-color: var(--bg-info); 
+            color: var(--text-info);
+            padding: 18px 20px; 
+            border-radius: var(--radius-md); 
+            margin-bottom: 30px; 
+            font-size: 14.5px; 
+            border: 1px solid var(--border-info);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            transition: background-color 0.3s;
+        }
+        
+        /* Categories */
+        .category { margin-bottom: 16px; }
+        
+        .category-btn { 
+            width: 100%; 
+            background-color: var(--bg-card); 
+            color: var(--text-main); 
+            border: 1px solid var(--border-light); 
+            padding: 20px; 
+            font-size: 17px; 
+            text-align: left; 
+            border-radius: var(--radius-lg); 
+            cursor: pointer; 
+            font-weight: 700; 
+            display: flex; 
+            align-items: center; 
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+        .category-btn:hover { background-color: var(--accent-hover); }
+        .category-btn .cat-subtitle { 
+            font-size: 14px; 
+            font-weight: 400; 
+            color: var(--text-muted); 
+            margin-left: 12px; 
+            flex-grow: 1; 
+        }
+        .chevron { color: var(--text-muted); font-size: 12px; transition: transform 0.3s; }
+        .category-btn.active .chevron { transform: rotate(180deg); }
+
+        .category-content { 
+            display: none; 
+            background-color: var(--bg-card); 
+            padding: 25px; 
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg); 
+            border: 1px solid var(--border-light);
+            border-top: none;
+            margin-top: -10px; 
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Workout Items */
+        .workout { padding: 30px 0; border-bottom: 1px solid var(--border-light); }
+        .workout:first-child { padding-top: 10px; }
+        .workout:last-child { border-bottom: none; padding-bottom: 10px; }
+        
+        .workout-title { font-weight: 800; font-size: 19px; color: var(--text-main); margin-bottom: 8px; }
+        
+        .workout-structure { 
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; 
+            font-size: 15px; 
+            font-weight: 600;
+            color: var(--accent-primary); 
+            background-color: var(--bg-struct);
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px; 
+        }
+        
+        /* Info Grid */
+        .info-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 25px; }
+        @media(min-width: 650px) { .info-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .info-box { 
+            background: var(--bg-box); 
+            padding: 16px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border-light);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .info-box-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-box-header span { margin-right: 8px; font-size: 15px; }
+
+        /* Visualizer - Modernized & Paces Added */
+        .visual-bar { 
+            display: flex; 
+            align-items: flex-end; 
+            height: 85px; 
+            background: var(--graph-bg); 
+            border-radius: var(--radius-md); 
+            padding: 6px; 
+            gap: 2px; 
+            overflow: hidden; 
+            border: 1px solid var(--border-light);
+        }
+        
+        .block { 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: flex-end; 
+            color: #ffffff; 
+            padding-bottom: 4px; 
+            border-radius: 4px 4px 1px 1px; 
+            transition: all 0.3s ease; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5); /* Stronger shadow for readability over colors */
+            line-height: 1.1;
+        }
+        
+        .b-time { font-size: 11px; font-weight: 800; }
+        .b-pace { font-size: 9px; font-weight: 500; opacity: 0.9; margin-top: 2px; }
+        
+        /* Vibrant Zones */
+        .z-rec { background-color: #94a3b8; height: 30%; } 
+        .z-z1  { background-color: #3b82f6; height: 45%; } 
+        .z-lt1 { background-color: #22c55e; height: 60%; } 
+        .z-ss  { background-color: #eab308; height: 75%; } 
+        .z-lt2 { background-color: #f97316; height: 90%; } 
+        .z-vo2 { background-color: #ef4444; height: 100%;} 
+        .z-ana { background-color: #ec4899; height: 100%;} 
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-card">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Vaihda teemaa">🌙</button>
+        <div class="header-title">Juoksijan Treenikirjasto</div>
+        <div class="inputs-row">
+            <div class="input-group">
+                <label>Päätavoite</label>
+                <div class="input-wrapper">
+                    <select id="targetSelect" onchange="updateWorkouts()">
+                        <option value="half">Puolimaraton</option>
+                        <option value="full">Maraton</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Aerobinen kynnys (LT1)</label>
+                <div class="input-wrapper">
+                    <input type="text" id="lt1Input" value="5:00" onkeyup="updateWorkouts()">
+                    <span>/km</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Anaerobinen kynnys (LT2)</label>
+                <div class="input-wrapper">
+                    <input type="text" id="lt2Input" value="4:10" onkeyup="updateWorkouts()">
+                    <span>/km</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="global-rules">
+        <div style="font-size: 20px;">💡</div>
+        <div>
+            <strong>Yleinen ohje:</strong> Lähes kaikkiin tehotreeneihin (LT1 ja yli) kuuluu verryttely 10–20' + 3–6 rullaavaa avausta sekä jäähdyttely 10–15'. Progressioissa lisätään ensisijaisesti kestoa/volyymia, vasta viimeisenä intensiteettiä.
+        </div>
+    </div>
+
+    <div id="app-content"></div>
+</div>
+
+<script>
+    // Theme logic
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById('themeToggle');
+        body.classList.toggle('dark-mode');
+        
+        if (body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+            btn.innerHTML = '☀️';
+        } else {
+            localStorage.setItem('theme', 'light');
+            btn.innerHTML = '🌙';
+        }
+    }
+
+    // Load saved theme on boot
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeToggle').innerHTML = '☀️';
+    }
+
+    // Time calculations
+    function timeStrSec(str) {
+        let p = str.split(':');
+        if(p.length !== 2) return 0;
+        return parseInt(p[0])*60 + parseInt(p[1]);
+    }
+
+    function secStrTime(sec) {
+        if(!sec || isNaN(sec)) return "--:--";
+        let m = Math.floor(sec/60);
+        let s = Math.round(sec%60);
+        return m + ":" + (s < 10 ? "0"+s : s);
+    }
+
+    // Toggles Accordions
+    function toggleCat(i) {
+        let btn = document.getElementById('btn-'+i);
+        let el = document.getElementById('cat-'+i);
+        if (el.style.display === 'block') {
+            el.style.display = 'none';
+            btn.classList.remove('active');
+        } else {
+            el.style.display = 'block';
+            btn.classList.add('active');
+        }
+    }
+
+    // Flattens repeating blocks to array
+    function flattenBlocks(blocks) {
+        let flat = [];
+        blocks.forEach(b => {
+            if(b.rep) {
+                for(let i=0; i<b.rep; i++) flat = flat.concat(flattenBlocks(b.items));
+            } else {
+                flat.push(b);
+            }
+        });
+        return flat;
+    }
+
+    // Formats duration: 0.5' -> 30s, 10 -> 10'
+    function formatDur(d) {
+        if (d < 1) return (d * 60) + "s";
+        return d + "'";
+    }
+
+    function updateWorkouts() {
+        if (typeof library === 'undefined') {
+            document.getElementById('app-content').innerHTML = '<div style="text-align:center; padding: 40px; color: #ef4444; background: #fee2e2; border-radius: 8px;">Virhe: Treenidataa (workouts.js) ei löydetty.</div>';
+            return;
+        }
+
+        let targetType = document.getElementById('targetSelect').value;
+        let targetLabel = targetType === 'half' ? 'PUOLIMARATON' : 'MARATON';
+
+        let lt1Sec = timeStrSec(document.getElementById('lt1Input').value);
+        let lt2Sec = timeStrSec(document.getElementById('lt2Input').value);
+        
+        let paces = {
+            rec: secStrTime(lt1Sec + 60),
+            z1: secStrTime(lt1Sec + 30),
+            lt1: secStrTime(lt1Sec),
+            ss: secStrTime((lt1Sec + lt2Sec) / 2),
+            lt2: secStrTime(lt2Sec),
+            vo2: secStrTime(lt2Sec * 0.90),
+            ana: secStrTime(lt2Sec * 0.80)
+        };
+
+        let html = '';
+        
+        library.forEach((cat, idx) => {
+            html += `<div class="category">
+                <button class="category-btn" id="btn-${idx}" onclick="toggleCat(${idx})">
+                    ${cat.title} 
+                    <span class="cat-subtitle">${cat.subtitle}</span> 
+                    <span class="chevron">▼</span>
+                </button>
+                <div class="category-content" id="cat-${idx}">`;
+            
+            cat.workouts.forEach(w => {
+                let text = w.struct;
+                text = text.replace(/\[rec\]/g, paces.rec + '/km');
+                text = text.replace(/\[z1\]/g,  paces.z1 + '/km');
+                text = text.replace(/\[lt1\]/g, paces.lt1 + '/km');
+                text = text.replace(/\[ss\]/g,  paces.ss + '/km');
+                text = text.replace(/\[lt2\]/g, paces.lt2 + '/km');
+                text = text.replace(/\[vo2\]/g, paces.vo2 + '/km');
+                text = text.replace(/\[ana\]/g, paces.ana + '/km');
+                
+                let flatBlocks = flattenBlocks(w.blocks);
+                let totalD = flatBlocks.reduce((sum, b) => sum + b.d, 0);
+                
+                let bars = '<div class="visual-bar">';
+                flatBlocks.forEach(b => {
+                    let wPct = (b.d / totalD) * 100;
+                    let bText = formatDur(b.d);
+                    let bPace = paces[b.z];
+                    
+                    let blockHtml = '';
+                    if (wPct > 6) { 
+                        // Enough space to show both time and pace
+                        blockHtml = `<span class="b-time">${bText}</span><span class="b-pace">${bPace}</span>`;
+                    } else if (wPct > 3) {
+                        // Very narrow block, show only time
+                        blockHtml = `<span class="b-time">${bText}</span>`;
+                    } // If less than 3%, don't show any text to keep it clean
+
+                    bars += `<div class="block z-${b.z}" style="width:${wPct}%">${blockHtml}</div>`;
+                });
+                bars += '</div>';
+
+                let goalText = w.goal || "Päivitetään pian...";
+                let notesText = w.notes || "Päivitetään pian...";
+                let progText = w.prog || "Päivitetään pian...";
+                let periodText = w.periodization ? w.periodization[targetType] : "Päivitetään pian...";
+
+                html += `<div class="workout">
+                    <div class="workout-title">${w.name}</div>
+                    <div class="workout-structure">${text}</div>
+                    
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-box-header"><span>🎯</span> Fysiologinen tavoite</div>
+                            ${goalText}
+                        </div>
+                        <div class="info-box">
+                            <div class="info-box-header"><span>⚠️</span> Huomioitavaa</div>
+                            ${notesText}
+                        </div>
+                        <div class="info-box">
+                            <div class="info-box-header"><span>📅</span> Jaksotus (${targetLabel})</div>
+                            ${periodText}
+                        </div>
+                        <div class="info-box">
+                            <div class="info-box-header"><span>📈</span> Progressio</div>
+                            ${progText}
+                        </div>
+                    </div>
+
+                    ${bars}
+                </div>`;
+            });
+            html += `</div></div>`;
+        });
+        
+        document.getElementById('app-content').innerHTML = html;
+        
+        // Open first category by default
+        if(document.getElementById('cat-0')) {
+            document.getElementById('cat-0').style.display = 'block';
+            document.getElementById('btn-0').classList.add('active');
+        }
+    }
+
+    window.onload = updateWorkouts;
+</script>
+
+</body>
+</html>
