@@ -1,388 +1,491 @@
-// workouts.js - Pro Treenikirjaston data, fysiologisesti varmennettu.
+// workouts.js — Juoksijan treenikirjasto (Keep it simple: polarisoitu 80/20)
+//
+// ZONET (yksinkertainen käyttö):
+// - 'z1'  = kevyt (selvästi alle LT1): puhe kulkee, hengitys rauhallinen
+// - 'z2'  = reipas aerobinen (LT1–alle LT2): puhe pätkii, mutta hallittu
+// - 'mp'  = maratonvauhti (noin 80–88% max / tapauskohtainen): “kova mutta kestävä”
+// - 'lt'  = kynnys (lähellä LT2): “kontrolloidun kova”, ei all-out
+// - 'vo2' = VO2max-alue: kova, mutta toistettavissa; tekniikka pysyy kasassa
+// - 'ana' = neuromuskulaarinen/sprintti: hyvin lyhyt, rento ja terävä (ei hapotusta haeta)
+// - 'rec' = palautus (hölkkä/kävely)
+//
+// PERIODISAATIO (tyypillinen malli, sovellettuna HM/Maraton):
+// - Peruskuntokausi (6–10 vko): volyymi ylös, 1 kevyt teho (rullaukset/mäkisprintit) + pitkä
+// - Rakennus (4–6 vko): 1 kynnystreeni + 1 VO2/teho viikkoon, pitkä kasvaa
+// - Spesifi (3–5 vko): 1 kilpailuvauhtinen (HM/MP) + 1 kynnys/VO2 (tarpeen mukaan), pitkä sisältää spesifiä
+// - Taper (10–21 pv): volyymi alas 40–60%, intensiteetti pidetään (lyhyempänä), väsymys ulos
+//
+// PROGRESSIO (kirjaston sisällä): lisää ensin kestoa/volyymia → sitten tiheyttä → vasta viimeisenä intensiteettiä.
 
 const library = [
-    {
-        title: "1) Aerobinen peruskestävyys (<LT1)",
-        subtitle: "Mitokondriot, hiussuonitus, palautuminen",
-        workouts: [
-            {
-                name: "1. Tasainen PK",
-                struct: "45–75' @ [z1]",
-                goal: "Nostaa aerobista peruskuntoa lisäämällä hiussuoniston tiheyttä ja mitokondrioiden määrää hitaissa tyypin I lihassyissä. Tehostaa solutason rasva-aineenvaihduntaa.",
-                notes: "Vältä niin sanottua 'harmaan alueen' harjoittelua (Z3/Z4). Pitää pystyä puhumaan täysin puuskuttamatta. Jos hengästyt, juokset liian kovaa ja menetät rasva-aineenvaihdunnan hyödyt.",
-                periodization: {
-                    half: "Harjoittelun tukipilari. Kuuluu viikko-ohjelmaan ympäri vuoden.",
-                    full: "Harjoittelun perusta. Kertynyt volyymi näissä harjoituksissa suojaa jalkoja maratonin loppupuolen lihasvaurioilta."
-                },
-                prog: "Lisää ensisijaisesti kestoa (esim. +5–10’/vko). Intensiteetti pidetään samana.",
-                blocks: [{ d: 60, z: 'z1' }]
-            },
-            {
-                name: "2. Pitkä lenkki",
-                struct: "90–150' @ [z1]",
-                goal: "Opeta kehoa käyttämään rasvaa energianlähteenä säästäen glykogeenivarastoja. Parantaa sidekudosten, jänteiden ja luiden mekaanista iskunkestävyyttä.",
-                notes: "Neste- ja energiahuolto on kriittinen, jotta kortisolitasot eivät nouse haitallisen korkeiksi. Nauti hiilihydraatteja 30-60g/tunti.",
-                periodization: {
-                    half: "90-120 min riittää puolimaratonille. Tärkein merkitys on peruskuntokaudella, lyhenee hieman kisakauden alkaessa.",
-                    full: "Koko harjoitusohjelman tärkein yksittäinen harjoitus. Kesto kasvatetaan progressiivisesti jopa 2.5–3 tuntiin."
-                },
-                prog: "Lisää kestoa maltillisesti (10–20’ kerrallaan). Intensiivisyys pidetään alle LT1:n.",
-                blocks: [{ d: 120, z: 'z1' }]
-            },
-            {
-                name: "3. Kaksiosainen peruslenkki",
-                struct: "2 x (35–60' @ [z1]) (Aamu & Ilta)",
-                goal: "Suuren aerobisen volyymin kerääminen siten, että tuki- ja liikuntaelimistön mekaaninen kuorma per harjoitus pysyy riittävän alhaisena estäen rasitusvammoja.",
-                notes: "Vaatii hyvää palautumiskapasiteettia ja ravitsemusta lenkkien välissä. Sopii lähinnä kokeneille juoksijoille korkean volyymin viikoilla.",
-                periodization: {
-                    half: "Harvemmin tarpeellinen, ellei tavoitella kansallisen tason huippuaikoja.",
-                    full: "Erinomainen työkalu määräviikoilla volyymin nostamiseen vammariskit minimoiden."
-                },
-                prog: "Lisää ensin toisen lenkin kestoa, vasta sen jälkeen nosta molempien pituutta.",
-                blocks: [{ d: 45, z: 'z1' }, { d: 5, z: 'rec' }, { d: 45, z: 'z1' }]
-            },
-            {
-                name: "4. Kevyt palauttava",
-                struct: "30–50' @ [rec]",
-                goal: "Lisää verenkiertoa lihaksissa edistäen aineenvaihduntatuotteiden poistumista. Rentouttaa parasympaattista hermostoa aktiivisen palautumisen keinoin.",
-                notes: "Ehdottoman tärkeää pitää syke todella alhaisena. Usein jopa reipas kävely on parempi vaihtoehto kuin liian kova 'palauttava' hölkkä.",
-                periodization: {
-                    half: "Käytetään tyypillisesti kovan kynnysharjoituksen (LT2) jälkeisenä päivänä.",
-                    full: "Kriittinen osa ohjelmaa maratonharjoittelun kovimmilla määräviikoilla lihaskudoksen mikrovaurioiden huoltamiseksi."
-                },
-                prog: "Lisää kestoa vain maltillisesti, tätä treeniä ei missään nimessä 'kovenneta'.",
-                blocks: [{ d: 40, z: 'rec' }]
-            },
-            {
-                name: "5. Pitkä lenkki nostolla",
-                struct: "100–140' (viimeiset 20–30' @ [z1]+ lähellä LT1)",
-                goal: "Opeta hermostoa ja lihassoluja työskentelemään taloudellisesti esiväsyneenä ilman merkittävää laktaatin kertymistä verenkiertoon.",
-                notes: "Noston pitää olla täysin hallittu. Älä missään nimessä lähde kilpailemaan harjoituksen lopussa, vaan pidä syke yhä niukasti alle LT1:n.",
-                periodization: {
-                    half: "Valmistaa kehoa kisan jälkimmäisen puoliskon rasitukseen peruskuntokauden loppupuolella.",
-                    full: "Erinomainen spesifi harjoitus rakennuskaudella ennen varsinaisten maratonvauhtisten (Steady State) pitkisten mukaantuloa."
-                },
-                prog: "Lisää loppunoston kestoa (esim. 15’ → 30’). Älä lisää intensiteettiä.",
-                blocks: [{ d: 90, z: 'rec' }, { d: 30, z: 'z1' }]
-            }
+  {
+    title: "1) Palauttava & peruskestävyys (Z1)",
+    subtitle: "Aerobinen perusta: mitokondriot, hiussuonitus, rasva-aineenvaihdunta",
+    workouts: [
+      {
+        name: "1. Palauttava hölkkä",
+        struct: "30–50' @ [z1] (pidä oikeasti helppona)",
+        goal: "Lisää verenkiertoa ja edistää palautumista ilman merkittävää lisäkuormaa.",
+        notes: "Jos jalat ovat väsyneet, lyhennä kestoa. Palauttava on hyödyllinen vain jos se ei nosta kokonaisstressiä liian korkeaksi.",
+        periodization: {
+          half: "Ympäri vuoden; erityisesti kovan treenin jälkeisenä päivänä.",
+          full: "Ympäri vuoden; maratonblokissa tärkein keino pitää volyymi korkeana ilman tehopiikkiä."
+        },
+        prog: "Lisää ensin 5–10' kestoa. Älä nosta tehoa, jos tavoite on palautuminen.",
+        blocks: [{ d: 40, z: "z1" }]
+      },
+      {
+        name: "2. Peruslenkki",
+        struct: "45–90' @ [z1]",
+        goal: "Rakentaa aerobista kapasiteettia matalalla metabolisella stressillä.",
+        notes: "Pidä teho selvästi alle LT1. Tämä on 80/20-mallin tärkein ‘perustiili’.",
+        periodization: {
+          half: "Ympäri vuoden; määrän perusta.",
+          full: "Ympäri vuoden; määrän perusta + maratonkestävyys."
+        },
+        prog: "Lisää kestoa 5–15' tai yksi lisä-Z1-lenkki viikkoon ennen tehojen lisäämistä.",
+        blocks: [{ d: 70, z: "z1" }]
+      },
+      {
+        name: "3. PK + rullaukset",
+        struct: "45–75' @ [z1] + 6–10 x 20s rullaus / 90s–2' helppo",
+        goal: "Ylläpitää neuromuskulaarista terävyyttä ja askelkontrollia ilman hapotusta.",
+        notes: "Rullaus = rento, nopeasti pyörivä askel. Jos rullaukset alkavat ‘puristaa’, lopeta sarja.",
+        periodization: {
+          half: "Peruskuntokaudella 1–2x/vko, myös kilpailukaudella ylläpitona.",
+          full: "Erityisen hyödyllinen maratonblokissa estämään askelnopeuden ‘hyytymistä’."
+        },
+        prog: "Lisää rullauksia 6 → 8 → 10, pidä palautus riittävänä (ei hapotusta).",
+        blocks: [
+          { d: 50, z: "z1" },
+          { rep: 8, items: [{ d: 0.33, z: "ana" }, { d: 1.75, z: "rec" }] },
+          { d: 10, z: "z1" }
         ]
-    },
-    {
-        title: "2) Aerobinen kynnys / Kova PK (LT1)",
-        subtitle: "Kestävyystalous ja rasvan/hiilarien käyttö",
-        workouts: [
-            {
-                name: "1. Yhtenäinen LT1",
-                struct: "15' Lämpö + 40–60' @ [lt1] + 10' Jäähy",
-                goal: "Nostaa fysiologista 'lattiaa'. Maksimoi rasva-aineenvaihdunnan tehon (FatMax) ja kehittää hitaiden lihassyiden kykyä tuottaa voimaa korkeammalla teholla.",
-                notes: "Pysy tarkasti aerobisella kynnyksellä. Hengityksen tulisi syventyä, mutta varsinaista hapenpuutetta (puuskuttamista) ei saa esiintyä.",
-                periodization: {
-                    half: "Loistava aerobisen moottorin tukiharjoitus ennen varsinaisia kovia puolimaratonvauhtisia viikkoja.",
-                    full: "Erittäin spesifi vauhti. Edustaa usein harrastajan tavoiteltua maratonvauhtia tai on aivan sen tuntumassa."
-                },
-                prog: "Lisää aikaa kynnyksellä (40’ → 60’ → 70’). Intensiteetti pidetään tiukasti LT1:ssä.",
-                blocks: [{ d: 15, z: 'z1' }, { d: 50, z: 'lt1' }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "2. LT1-cruise",
-                struct: "15' Lämpö + 4x10'/2' @ [lt1] (tauko @ [rec]) + 10' Jäähy",
-                goal: "Mahdollistaa suuremman kokonaismäärän työtä LT1-alueella kuin yhtenäinen suoritus, säilyttäen askeleen kimmoisuuden paremmin.",
-                notes: "Taukojen aikana ei ole tarkoitus seistä paikallaan, vaan hölkätä erittäin kevyesti jotta laktaatti ei pääse jäykistämään jalkoja.",
-                periodization: {
-                    half: "Tehokas tapa tuoda laatua peruskuntokaudelle ilman, että keho kuormittuu liikaa.",
-                    full: "Voidaan käyttää loistavasti maratonvauhtisen harjoittelun sisäänajovaiheessa (rakennuskauden alku)."
-                },
-                prog: "Lisää toistoja tai yksittäisen toiston aikaa (4x10’ → 5x10’ tai 4x12’).",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 4, items: [{ d: 10, z: 'lt1' }, { d: 2, z: 'rec' }] }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "3. Pidemmät lohkot",
-                struct: "15' Lämpö + 3x15'/2' @ [lt1] + 10' Jäähy",
-                goal: "Kasvattaa tehokasta aikaa LT1-alueella hallitusti. Ohjaa entsyymitoimintaa säästämään glykogeenia pitkissä suorituksissa.",
-                notes: "Keskity rentoon lantion asentoon ja juoksutekniikkaan, vaikka kesto kasvaa ja lihasväsymystä alkaa hieman esiintyä.",
-                periodization: {
-                    half: "Harjoituskauden alun avainharjoitus jolla rakennetaan pohja kovemmille VK-treeneille.",
-                    full: "Keskeinen lajivoimaa kasvattava maratonharjoite, jota voi tehdä jopa kisaviikoilla ylläpitävänä."
-                },
-                prog: "Lisää lohkon kestoa (15’ → 18’ → 20’) tai vähennä palautusaikaa.",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 3, items: [{ d: 15, z: 'lt1' }, { d: 2, z: 'rec' }] }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "4. Pitkän lenkin sisäänrakennettu LT1",
-                struct: "Yht. 120' sis. 2x20'/5' @ [lt1]",
-                goal: "Simuloi kilpailun loppuosan esiväsytettyä tilaa ja kehittää kykyä pitää yllä aerobista vauhtia hiilihydraattivarastojen huvetessa.",
-                notes: "Harjoittele kisa-aikaista energiatankkausta (geelit). Älä vedä LT1-osuuksia yhtään yli, muuten palautuminen tästä harjoituksesta viivästyy merkittävästi.",
-                periodization: {
-                    half: "Erinomainen itseluottamuksen ja kestävyyden rakentaja noin 4-6 viikkoa ennen starttia.",
-                    full: "Erikoisharjoitus maratonille. Tehdään tyypillisesti lajinomaisella harjoitusjaksolla (3-8 vko ennen kisaa)."
-                },
-                prog: "Lisää LT1-vedon pituutta (2x20’ → 3x20’ tai 2x25’), pidä verryttelyt aina kevyenä.",
-                blocks: [{ d: 40, z: 'z1' }, { d: 20, z: 'lt1' }, { d: 5, z: 'rec' }, { d: 20, z: 'lt1' }, { d: 35, z: 'z1' }]
-            },
-            {
-                name: "5. Mäkinen LT1 (Effort-ohjattu)",
-                struct: "15' Lämpö + 5x8'/2' ylämäkeen @ [lt1] effort + 10' Jäähy",
-                goal: "Lajinomainen voimakestävyys. Aktivoi enemmän motorisia yksiköitä (erityisesti pakarat/takareidet) matalalla laktaattitasolla.",
-                notes: "Keskity efforttiin, ei kelloon! Tuntuma ei saa nousta anaerobiseksi hapotteluksi ylämäessä. Alamäet rullataan äärimmäisen kevyesti iskutusta säästäen.",
-                periodization: {
-                    half: "Sopii peruskuntokaudelle rakentamaan voimaominaisuuksia askelkontaktia varten.",
-                    full: "Ehdottoman tärkeä työkalu, mikäli tavoitemaraton (esim. Tukholma tai Boston) sisältää reittiprofiililtaan mäkiä."
-                },
-                prog: "Lisää toistoja (5 → 6–7) tai pidennä mäkivedon kestoa. Älä purista tehoja ylös.",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 5, items: [{ d: 8, z: 'lt1' }, { d: 2, z: 'rec' }] }, { d: 10, z: 'rec' }]
-            }
+      },
+      {
+        name: "4. Aerobinen progressio (helppo → reipas)",
+        struct: "60–90' siten, että viimeiset 15–25' @ [z2]",
+        goal: "Opettaa siirtymään kovempaan tehoon aerobisesti hallitusti (glyko- ja lämpöstressi maltillisena).",
+        notes: "Ei kynnys: ‘reipas mutta kontrolloitu’. Jos syke karkaa tai askel hajoaa, palaa Z1:een.",
+        periodization: {
+          half: "Rakennus- ja spesifissä vaiheessa 1x/2 vko vaihtoehtona pitkälle tai kynnykselle.",
+          full: "Maratonspesifissä vaiheessa hyvä ‘välimuoto’ MP-blokkien rinnalle."
+        },
+        prog: "Pidennä reipasta osuutta 15' → 20' → 25' ennen vauhdin nostoa.",
+        blocks: [{ d: 60, z: "z1" }, { d: 20, z: "z2" }]
+      }
+    ]
+  },
+
+  {
+    title: "2) Pitkät lenkit (Z1 → Z2/MP)",
+    subtitle: "Kestävyys, energiansaaton hallinta, rasvaoksidaatio, iskutuksen sieto",
+    workouts: [
+      {
+        name: "1. Pitkä pk",
+        struct: "90–180' @ [z1]",
+        goal: "Kasvattaa kestävyyttä ja kudosten kuormituksensietoa matalalla teholla.",
+        notes: "Pitkän lenkin teho pidetään kurissa: tavoite on volyymi, ei teho. Tankkaus ja nesteytys korostuvat yli 90 minuutissa.",
+        periodization: {
+          half: "Perusta läpi kauden; tyypillisesti 75–120'.",
+          full: "Keskeinen; tyypillisesti 105–180' kauden vaiheesta riippuen."
+        },
+        prog: "Nosta kestoa 10–20' kerrallaan. Tee kevennysviikko joka 3.–4. viikko.",
+        blocks: [{ d: 135, z: "z1" }]
+      },
+      {
+        name: "2. Pitkä + loppunosto",
+        struct: "90–150' @ [z1] + 20–40' @ [z2]",
+        goal: "Harjoittaa juoksua ‘väsyneillä jaloilla’ aerobisesti, ilman täyttä kynnysstressiä.",
+        notes: "Loppunosto on reipas aerobinen, ei kynnys. Hyvä vaihtoehto, jos et halua kahta kovaa treeniä samalle viikolle.",
+        periodization: {
+          half: "Spesifissä vaiheessa 2–5 vkoa ennen tavoitetta.",
+          full: "Maratonspesifissä vaiheessa 4–8 vkoa ennen kisaa."
+        },
+        prog: "Pidennä loppunostoa 20' → 30' → 40'.",
+        blocks: [{ d: 100, z: "z1" }, { d: 30, z: "z2" }]
+      },
+      {
+        name: "3. Maratonspesifi pitkä (MP-blokit)",
+        struct: "30' @ [z1] + 2–4 x 15' @ [mp] / 5' helppo + 10–20' @ [z1]",
+        goal: "Siirtää aerobista kapasiteettia kilpailuvauhtiin (energia- ja lihaskuormitus spesifisti).",
+        notes: "Pidä MP oikeasti maratonvauhtina (ei kynnyksenä). Tämä on ‘kova’ pitkän lenkin muoto: tee vain kun perusvolyymi on jo kasassa.",
+        periodization: {
+          half: "Harvoin tarpeen; vaihtoehtoisesti 2x15' @ HM-vauhtia hitaammin (z2).",
+          full: "Tärkeä 3–7 vkoa ennen maratonia (yksilön sietokyvyn mukaan)."
+        },
+        prog: "Lisää ensin MP-minuutit 2x15' → 3x15' → 4x15' ennen vauhdin ‘hiomista’.",
+        blocks: [
+          { d: 30, z: "z1" },
+          { rep: 3, items: [{ d: 15, z: "mp" }, { d: 5, z: "rec" }] },
+          { d: 15, z: "z1" }
         ]
-    },
-    {
-        title: "3) Vakaa vauhtikestävyys (LT1–LT2)",
-        subtitle: "Kestävä kova vauhti, puolimaraton/maraton-spesifi",
-        workouts: [
-            {
-                name: "1. Steady-lohkot",
-                struct: "15' Lämpö + 3x20'/3' @ [ss] + 10' Jäähy",
-                goal: "Kehittää elimistön kykyä poistaa ja kierrättää laktaattia nopeammin kuin sitä ehtii kertyä häiritsevissä määrin lihassoluihin (Lactate Shuttle).",
-                notes: "Vauhdin pitää tuntua 'mukavan raskaalta' (Comfortably Hard). Tämä ei ole maksimaalinen raasto.",
-                periodization: {
-                    half: "Erittäin lähellä suoraa puolimaratonin kisavauhtia. Tehdään usein läpi valmistavan kauden.",
-                    full: "Keskeinen harjoite nopeammille maratoonareille (esim. sub 3h), edustaa usein optimaalista kisatehoa."
-                },
-                prog: "Lisää kokonaisaikaa (3x20’ → 3x25’ → 4x20’).",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 3, items: [{ d: 20, z: 'ss' }, { d: 3, z: 'rec' }] }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "2. Kaksi pitkää vetoa",
-                struct: "15' Lämpö + 2x30'/4' @ [ss] + 10' Jäähy",
-                goal: "Opettaa kehoa sietämään lihasväsymystä ja psykologista kuormaa pitkäkestoisessa vauhtikestävyyssuorituksessa.",
-                notes: "Jaa voimat viisaasti. Toisen vedon ei pitäisi olla ensimmäistä hitaampi. Jos toinen veto on merkittävästi raskaampi, olet ylittänyt kynnyksen.",
-                periodization: {
-                    half: "Spesifi kisavauhtinen erikoisharjoitus 3-5 viikkoa ennen tavoitekilpailua.",
-                    full: "Erinomainen pitkän lajinomaisen vauhdin simulaatio, kasvattaa lajikestävyyttä ratkaisevasti."
-                },
-                prog: "Lisää kestoa (2x30’ → 2x35’) tai vähennä palautuksen kestoa (4’ → 3’).",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 2, items: [{ d: 30, z: 'ss' }, { d: 4, z: 'rec' }] }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "3. Pitkähkö tempo",
-                struct: "15' Lämpö + 50–70' @ [ss] + 10' Jäähy",
-                goal: "Maksimoi glykogeenin ja rasvan yhteiskäytön tehokkuuden vauhtikestävyysalueella opettaen vahvaa tasavauhtisuutta.",
-                notes: "Henkisesti vaativa harjoitus. Vaatii hyvää vauhdinjakotaitoa, aloita mieluummin varovasti. Ei suositella tehtäväksi kerran viikkoa useammin.",
-                periodization: {
-                    half: "Kilpailukestävyyden kivijalka. Tehdään yleensä 4-8 viikkoa ennen kisaa.",
-                    full: "Osa huippumaratoonareiden avainharjoittelua. Korvaa usein ylipitkät ja liian hitaat lenkit edistyneemmillä juoksijoilla."
-                },
-                prog: "Ensisijaisesti kesto (50’ → 70’). Ei vauhdin kiristämistä.",
-                blocks: [{ d: 15, z: 'z1' }, { d: 60, z: 'ss' }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "4. Progressiotempo",
-                struct: "15' Lämpö + 20' @ [lt1] + 25' @ [ss] + 15' @ [lt2] + 10' Jäähy",
-                goal: "Opettaa negatiivista vauhdinjakoa ja kykyä kiihdyttää vauhtia lihassolujen laktaattikonsentraation hitaasta noususta huolimatta.",
-                notes: "Alkuosuus on maltettava juosta todella kontrolloidusti. Vain treenin viimeiset 10-15 minuuttia puristetaan kynnykselle, jolloin harjoitus tuntuu raskaalta.",
-                periodization: {
-                    half: "Kehittää kykyä kiristää tahtia viimeisellä 5 kilometrillä. Loistava harjoitus kilpailunomaiseen asennoitumiseen.",
-                    full: "Simuloi erittäin hyvin maratonin toisen puoliskon fysiologista rasitusta ja pakottaa ylläpitämään taloudellisuutta."
-                },
-                prog: "Pidennä keskimmäistä 'Steady'-osuutta tai viimeistä kynnysosuutta, säilytä progressiivinen luonne.",
-                blocks: [{ d: 15, z: 'z1' }, { d: 20, z: 'lt1' }, { d: 25, z: 'ss' }, { d: 15, z: 'lt2' }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "5. Vaihtelut (Laktaatin hallinta)",
-                struct: "15' Lämpö + 6x(5' @ [lt2] / 5' @ [lt1]) + 10' Jäähy",
-                goal: "Kehittää laktaatin nopeaa 'siivoamista' (clearance) aktiivisen työn aikanaFloat-vaiheen ansiosta, kehittäen laktaatti-aineenvaihduntaa tehokkaasti.",
-                notes: "Hyödyt saadaan paremmin pitämällä palautus (LT1) riittävän reippaana, kuin vetämällä LT2-osuus maksimilla ja kävelemällä palautukset. Keskity sujuvaan rytminvaihdokseen.",
-                periodization: {
-                    half: "Kisavauhdin molemmin puolin sahaaminen on ehkä tehokkain yksittäinen treeni puolimaratonin vauhtikestävyyden rakentamiseen.",
-                    full: "Tehostaa entsyymitoimintaa. Tehdään mieluiten valmistavan kauden alussa."
-                },
-                prog: "Lisää blokkien määrää (6 → 7–8) tai lyhennä LT1 'float' osuuden pituutta hieman.",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 6, items: [{ d: 5, z: 'lt2' }, { d: 5, z: 'lt1' }] }, { d: 10, z: 'rec' }]
-            }
+      }
+    ]
+  },
+
+  {
+    title: "3) Kynnys (LT2) & tempo (kontrolloitu ‘kova’)",
+    subtitle: "Nostaa kestävää vauhtia: korkea aerobinen työ, hallittu laktaattitaso",
+    workouts: [
+      {
+        name: "1. Yhtenäinen tempo",
+        struct: "15–20' lämpö + 20–40' @ [lt] + 10–15' jäähy",
+        goal: "Parantaa kykyä ylläpitää korkeaa aerobista tehoa lähellä LT2:ta.",
+        notes: "Oikea teho: pystyt pitämään vauhdin tasaisena ilman ‘hyytymistä’. Jos joudut kiristämään lopussa selvästi, aloitit liian kovaa.",
+        periodization: {
+          half: "Rakennus- ja spesifissä vaiheessa 1x/vko tai 1x/2 vko.",
+          full: "Usein 1x/2 vko; maratonspesifissä korvautuu osin MP-treenillä."
+        },
+        prog: "Pidennä tempoa 20' → 30' → 40' ennen vauhdin nostoa.",
+        blocks: [{ d: 20, z: "z1" }, { d: 30, z: "lt" }, { d: 15, z: "z1" }]
+      },
+      {
+        name: "2. Cruise-intervallit (Daniels-tyyli)",
+        struct: "20' lämpö + 5–8 x 6' @ [lt] / 60–90s helppo + 10–15' jäähy",
+        goal: "Suuri kynnysvolyymi hallitulla rasituksella (lyhyet palautukset pitävät kuorman aerobisesti korkeana).",
+        notes: "Tämä on usein ‘helpompi tehdä oikein’ kuin pitkä yhtenäinen tempo. Voit vaihdella 5–10 min vetoja saman tehoalueen sisällä.",
+        periodization: {
+          half: "Erinomainen perusmuoto 6–12 vkoa ennen kisaa.",
+          full: "Hyvä rakennusvaiheessa; lähellä maratonia painotus siirtyy MP:hen."
+        },
+        prog: "Lisää ensin vetoja 5 → 6 → 7 → 8 (tai pidennä 6' → 8').",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 6, items: [{ d: 6, z: "lt" }, { d: 1.25, z: "rec" }] },
+          { d: 12, z: "z1" }
         ]
-    },
-    {
-        title: "4) Kynnyskestävyys (LT2)",
-        subtitle: "Kyky ylläpitää kovaa vauhtia pitkään",
-        workouts: [
-            {
-                name: "1. Yhtenäinen kynnystempo",
-                struct: "15' Lämpö + 20–40' @ [lt2] + 15' Jäähy",
-                goal: "Siirtää anaerobista kynnystä (LT2) kovempaan vauhtiin ja parantaa kehon maksimaalista kykyä toimia happotasapainon ylärajalla (MLSS - Maximal Lactate Steady State).",
-                notes: "ÄLÄ YLITÄ KYNNYSTÄ! Tämä on kriittisin virhe harrastajilla. Mieluummin 5s/km hitaammin kuin 2s/km liian kovaa. Jos ylität LT2:n, harjoitus on anaerobinen ja vaatii pitkän palautumisen.",
-                periodization: {
-                    half: "Kaikista spesifein ja tärkein yksittäinen ominaisuus 10km-Puolimaraton tuloksen kannalta. Painotus 2-8 vko ennen kisaa.",
-                    full: "Nostaa suorituskyvyn 'kattovauhtia', jolloin tavoiteltu maratonvauhti tuntuu myöhemmin suhteellisesti paljon kevyemmältä."
-                },
-                prog: "Lisää kestoa (20’ → 30’ → 40’). Pysy kurinalaisesti vauhdisa.",
-                blocks: [{ d: 15, z: 'z1' }, { d: 30, z: 'lt2' }, { d: 15, z: 'rec' }]
-            },
-            {
-                name: "2. Cruise-interval",
-                struct: "15' Lämpö + 5x6'/90s @ [lt2] + 10' Jäähy",
-                goal: "Mahdollistaa suuremman määrän työtä LT2-kynnyksellä lyhyiden, hapenpuutetta poistavien taukojen ansiosta ilman liiallista maitohapon kertymistä.",
-                notes: "Palautusten on oltava lyhyitä (60-90s). Jos koet tarvitsevasi esim. 3 minuutin palautuksen, olet juossut vedot huomattavasti liian kovaa (VO2max-alueella).",
-                periodization: {
-                    half: "Ehdottoman tärkeä volyymiharjoitus kynnysalueen hallintaan.",
-                    full: "Toimii peruskuntokauden ja rakennuskauden turvallisena, vakiomuotoisena tehoharjoituksena."
-                },
-                prog: "Lisää toistoja (5 → 6–7) tai vedon kestoa (6’ → 7-8’).",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 5, items: [{ d: 6, z: 'lt2' }, { d: 1.5, z: 'rec' }] }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "3. Klassikko",
-                struct: "15' Lämpö + 3x10'/2' @ [lt2] + 10' Jäähy",
-                goal: "Puskurikapasiteetin, laktaatin poiston ja kynnysvauhdin mekaanisen juoksutaloudellisuuden samanaikainen kehittäminen hyvällä rytmillä.",
-                notes: "Kolmas veto saa tuntua jaloissa raskaalta, mutta hengityksen on pysyttävä yhä tasaisena '2-askelta sisään, 2-ulos' rytmissä.",
-                periodization: {
-                    half: "Klassinen kisavauhdin vakauttaja, jota voi viljellä viikoittain lähempänä tavoitetta.",
-                    full: "Toimii tehokkaana 'systeemin herättäjänä' muuten volyymipainotteisessa jaksotuksessa."
-                },
-                prog: "Lisää kestoa vedoissa (3x10’ → 3x12’ → 3x15’).",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 3, items: [{ d: 10, z: 'lt2' }, { d: 2, z: 'rec' }] }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "4. Pidemmät vedot",
-                struct: "15' Lämpö + 4x8'/2' @ [lt2] + 10' Jäähy",
-                goal: "Nostaa fysiologista sietokykyä ylläpitää kovaa LT2-vauhtia ja toimii hyvänä siirtymänä kohti yhtenäistä jatkuvaa kynnystempoa.",
-                notes: "Sopii kokeneemmille kestävyysurheilijoille. Palautuksen aikana kävely tai kevyt hölkkä pitää aineenvaihdunnan käynnissä.",
-                periodization: {
-                    half: "Varsinaisen kisasimulaation ja vauhti-itseluottamuksen rakennus.",
-                    full: "Tukee vauhtireservin ylläpitoa määräviikkojen keskellä."
-                },
-                prog: "Nosta kokonaisaikaa (4x8’ → 5x8’ tai 4x10’).",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 4, items: [{ d: 8, z: 'lt2' }, { d: 2, z: 'rec' }] }, { d: 10, z: 'rec' }]
-            },
-            {
-                name: "5. Kaksi lohkoa + loppu",
-                struct: "15' Lämpö + 2x(15'/4' @ [lt2]) + 10' @ [lt2] + 10' Jäähy",
-                goal: "Simuloi kilpailun loppupuolen fysiologisia vaatimuksia. Pakottaa pitämään askeleen mekaanisesti koossa hermoston esiväsymyksestä huolimatta.",
-                notes: "Säilytä ehdoton kuri! Pidä viimeinen 10min veto tiukasti LT2-kynnyksellä, älä päästä vauhtia karkaamaan anaerobiseksi 'all out' -kiriksi.",
-                periodization: {
-                    half: "Sopii kovan harjoitusviikon pääharjoitukseksi 2-4 viikkoa ennen starttia.",
-                    full: "Erittäin kuormittava, tehdään harvemmin. Käytä lähinnä kuntohuipun terävöittämiseen."
-                },
-                prog: "Pidennä viimeistä osuutta (10’ → 15’).",
-                blocks: [{ d: 15, z: 'z1' }, { rep: 2, items: [{ d: 15, z: 'lt2' }, { d: 4, z: 'rec' }] }, { d: 10, z: 'lt2' }, { d: 10, z: 'rec' }]
-            }
+      },
+      {
+        name: "3. 2 x 20' kynnys",
+        struct: "20' lämpö + 2x20' @ [lt] / 3–5' helppo + 10–15' jäähy",
+        goal: "Korkea laatu + iso työmäärä kynnyksellä, mutta jaettuna hallittavaksi.",
+        notes: "Jos toinen 20' hyytyy pahasti, aloitus oli liian kova. Tavoite on tasainen teho, ei ‘testi’.",
+        periodization: {
+          half: "Hyvä 4–10 vkoa ennen kisaa.",
+          full: "Hyvä 6–12 vkoa ennen kisaa; lähempänä kisapäivää korvaa osin MP-blokeilla."
+        },
+        prog: "Lisää kokonaiskestoa: 2x15' → 2x20' → 3x15'.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 2, items: [{ d: 20, z: "lt" }, { d: 4, z: "rec" }] },
+          { d: 12, z: "z1" }
         ]
-    },
-    {
-        title: "5) Maksimaalinen hapenotto (VO2max)",
-        subtitle: "Selvästi yli LT2, korkea aerobinen teho",
-        workouts: [
-            {
-                name: "1. 4x4 min",
-                struct: "20' Lämpö + 4x4'/3' @ [vo2] + 15' Jäähy",
-                goal: "Maksimoi sydämen iskutilavuuden (Stroke Volume) ja ventilaation. Klassinen Norjalainen malli maksimaalisen hapenkulutuksen (VO2max) nostamiseen.",
-                notes: "Tavoitteena on kerätä maksimaalinen aika >90% sykealueella. Vauhdin ei tarvitse olla 100% sprintti, noin kova 3-5 km kisavauhti ajaa fysiologisen asian täydellisesti.",
-                periodization: {
-                    half: "Nostaa fysiologista 'kattoa' ja hapenottoa. Tehdään yleensä blokkina aikaisin kaudella (10-14 vko ennen kisaa).",
-                    full: "Kehittää iskunpituutta ja hapenottoa. Tehdään usein vain peruskuntokaudella voimablokkien ohessa."
-                },
-                prog: "Lisää toistoja (4 → 5) ennen vauhdin koventamista.",
-                blocks: [{ d: 20, z: 'z1' }, { rep: 4, items: [{ d: 4, z: 'vo2' }, { d: 3, z: 'rec' }] }, { d: 15, z: 'rec' }]
-            },
-            {
-                name: "2. 5x3 min",
-                struct: "20' Lämpö + 5x3'/3' @ [vo2] + 15' Jäähy",
-                goal: "Nopeampi VO2max-kinetiikan saavuttaminen (elimistö siirtyy hapenottotilaan nopeammin).",
-                notes: "Palautuksen tulee olla aktiivinen (kävely/hölkkä) jotta verenkierto tasaantuu. Jokainen veto on pystyttävä tekemään laadukkaasti.",
-                periodization: {
-                    half: "Tukee kynnysharjoittelua nostamalla fysiologista kapasiteettia maksimialueella.",
-                    full: "Etsitään askeleeseen kaivattua 'lentoa' talvella tai harjoituskauden alkuvaiheilla."
-                },
-                prog: "Lisää toistoja (5 → 6-7) tai lyhennä palautusta.",
-                blocks: [{ d: 20, z: 'z1' }, { rep: 5, items: [{ d: 3, z: 'vo2' }, { d: 3, z: 'rec' }] }, { d: 15, z: 'rec' }]
-            },
-            {
-                name: "3. 6x3 min lyhyellä palautuksella",
-                struct: "20' Lämpö + 6x3'/2' @ [vo2] + 15' Jäähy",
-                goal: "Pitää hapenkulutuksen maksimissa pidempään palautusten jäädessä tarkoituksella hieman epätäydellisiksi.",
-                notes: "Erittäin vaativa harjoitus. Riskinä askeleen hajoaminen ja massiivinen maitohappokertymä, jos lähdet vedoissa liian kovaa liikkeelle.",
-                periodization: {
-                    half: "Tällä harjoituksella saadaan ns. 'kone auki' ja heräteltyä keho kisaa varten noin 2-3 viikkoa ennen h-hetkeä.",
-                    full: "Lähinnä harvinaisempi ärsykkeen vaihto, jos kynnysvedot alkavat puuduttaa."
-                },
-                prog: "Lisää toistoja tai jaa sarjoihin (esim. 2x4x3' pitkällä sarjapalautuksella).",
-                blocks: [{ d: 20, z: 'z1' }, { rep: 6, items: [{ d: 3, z: 'vo2' }, { d: 2, z: 'rec' }] }, { d: 15, z: 'rec' }]
-            },
-            {
-                name: "4. 1 min toistot",
-                struct: "20' Lämpö + 12x1'/1' @ [vo2]+ + 15' Jäähy",
-                goal: "Mahdollistaa erittäin suuren minuuttimäärän VO2max-alueella pienemmällä laktaatin ja väsymyksen kertymisellä kuin tasapitkät 4 minuutin vedot.",
-                notes: "Vauhti voi olla hieman kovempaa (vVO2max). Muista, että ensimmäiset 4 toistoa tuntuvat helpolta, mutta loppu vaatii henkistä kovuutta.",
-                periodization: {
-                    half: "Parantaa hermotusta ja taloudellisuutta selvästi kilpailuvauhtia nopeammassa juoksussa.",
-                    full: "Tuo jaloille nopeaa ja laadukasta ylivauhtista ärsykettä ilman pitkää ja tuhoisaa palautumisaikaa."
-                },
-                prog: "Lisää toistoja (12 → 15) ennen nopeuden nostamista.",
-                blocks: [{ d: 20, z: 'z1' }, { rep: 12, items: [{ d: 1, z: 'vo2' }, { d: 1, z: 'rec' }] }, { d: 15, z: 'rec' }]
-            },
-            {
-                name: "5. Mäkivedot (VO2max)",
-                struct: "20' Lämpö + 10x60s ylös @ [vo2] effort / hölkkä alas + 15' Jäähy",
-                goal: "Sydämen iskutilavuuden maksimointi yhdistettynä voimantuottoon. Lajivoima paranee merkittävästi vähemmällä jänteisiin kohdistuvalla iskutuksella.",
-                notes: "Keskity vahvaan lantion työntöön ja käsien pumppaavaan liikkeeseen ylämäessä. Palauta rauhallisesti hölkkäämällä tai kävelemällä alas.",
-                periodization: {
-                    half: "Erinomainen hapenottotreeni peruskuntokauden voima- ja tekniikkapainotteisille viikoille.",
-                    full: "Erittäin turvallinen tapa tehdä maksimitehoa. Rakentaa pakaroihin vahvuutta mäkisiin kisoihin."
-                },
-                prog: "Lisää toistoja tai pidennä maksimivetoa (60” → 75”).",
-                blocks: [{ d: 20, z: 'z1' }, { rep: 10, items: [{ d: 1, z: 'vo2' }, { d: 1.5, z: 'rec' }] }, { d: 15, z: 'rec' }]
-            }
+      },
+      {
+        name: "4. Kynnys ylämäkeen (rasitusohjattu)",
+        struct: "20' lämpö + 4–6 x 6' ylämäki @ [lt]-tuntu / hölkkä alas + 10–15' jäähy",
+        goal: "Kynnystyö pienemmällä iskutuksella; lihas- ja tukikudossäästö verrattuna kovaan tasamaahan.",
+        notes: "Ohjaa rasituksella (RPE/hengitys), koska vauhti muuttuu jyrkkyyden mukaan. Tekniikka: ryhti, lantio ylhäällä.",
+        periodization: {
+          half: "Rakennusvaiheessa erinomainen vaihtoehto tasamaan tempolle.",
+          full: "Hyvä erityisesti jos haluat kynnyksen ‘turvallisemmin’ iskutuksen suhteen."
+        },
+        prog: "Lisää ensin vetoja 4 → 5 → 6 tai pidennä 6' → 8'.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 5, items: [{ d: 6, z: "lt" }, { d: 3, z: "rec" }] },
+          { d: 12, z: "z1" }
         ]
-    },
-    {
-        title: "6) Anaerobinen & Nopeus (>>LT2)",
-        subtitle: "Hermostollinen teho, juoksutalous, maksimikapasiteetti",
-        workouts: [
-            {
-                name: "1. Lyhyet vedot (Nopeus/Talous)",
-                struct: "20' Lämpö + 12x200m / 200m hölkkä @ [ana] + 15' Jäähy",
-                goal: "Neuromuskulaarisen (hermostollisen) viestinnän parantaminen ja elastisen energian tuoton hyödyntäminen. Rakentaa puhdasta juoksutaloudellisuutta.",
-                notes: "Juokse rennon kovaa, ei väkisin puristamalla. Tekniikan on pysyttävä lentävänä ja ehjänä. Pitkä 200m hölkkäpalautus estää happojen kertymisen.",
-                periodization: {
-                    half: "Hyödyllinen ympäri vuoden. Ylläpitää askeltiheyttä ja askeleen kimmoisuutta puurouttavan määräharjoittelun keskellä.",
-                    full: "Suositellaan tehtäväksi esimerkiksi kevyen lenkin päätteeksi estämään maratoonarin tyypillistä 'töpöttävää' askelta."
-                },
-                prog: "Pidennä vedon matkaa maltillisesti (200m → 300m), säilytä vauhti rentona.",
-                blocks: [{ d: 20, z: 'z1' }, { rep: 12, items: [{ d: 0.8, z: 'ana' }, { d: 1.5, z: 'rec' }] }, { d: 15, z: 'rec' }]
-            },
-            {
-                name: "2. 30 s kovat (Anaerobinen kap.)",
-                struct: "20' Lämpö + 10x30s/3' @ [ana] + 15' Jäähy",
-                goal: "Maksimoi glykolyysin nopeuden tuottaen runsaasti maitohappoa. Pakottaa kehon puskurointijärjestelmät (esim. bikarbonaatti) toimimaan äärirajoilla.",
-                notes: "Nämä vedot vedetään käytännössä lähes täysillä (all-out). 3 minuutin palautus voi aluksi tuntua liian pitkältä, mutta se on täysin pakollinen hermoston elpymiseksi.",
-                periodization: {
-                    half: "Spesifi ensisijaisesti 5-10km kisoihin. Puolimaratonille lähinnä vauhtireservin ylläpitona.",
-                    full: "Aivan maratoonarin spektrin ääripäässä. Käytetään harvoin, joskus nopeusjaksolla kauden alussa."
-                },
-                prog: "Lisää toistoja tai lyhennä palautusta hieman.",
-                blocks: [{ d: 20, z: 'z1' }, { rep: 10, items: [{ d: 0.5, z: 'ana' }, { d: 3, z: 'rec' }] }, { d: 15, z: 'rec' }]
-            },
-            {
-                name: "3. 30/30-blokit (Puskurikyky)",
-                struct: "20' Lämpö + 3x(8x30s/30s) / 4' palautus @ [vo2]/[ana] + 15' Jäähy",
-                goal: "Kehittää kykyä tuottaa aerobista energiaa maksimivedoissa ja parantaa lihasten valmiutta hapettaa ja sietää valtavaa maitohappokuormaa.",
-                notes: "Kavala harjoitus. Ensimmäiset toistot tuntuvat leikiltä, mutta epätäydellinen 30s palautus nostaa happotaakan nopeasti maksimiin sarjan lopussa.",
-                periodization: {
-                    half: "Maksimikestävyyden erikoisharjoitus. Nostaa kilpailukykyä lajinomaisesti kovissa nousuissa ja irtiotto-tilanteissa.",
-                    full: "Toimii tehokkaana 'kattotreeninä', jota voi hyödyntää voimablokissa kaukana maratonista."
-                },
-                prog: "Lisää toistoja per sarja (8 → 10 → 12).",
-                blocks: [{ d: 20, z: 'z1' }, { rep: 3, items: [{ rep: 8, items: [{ d: 0.5, z: 'ana' }, { d: 0.5, z: 'rec' }] }, { d: 4, z: 'rec' }] }, { d: 15, z: 'rec' }]
-            },
-            {
-                name: "4. 400 m vedot",
-                struct: "20' Lämpö + 8x400m / 2.5' @ [ana]- + 15' Jäähy",
-                goal: "Nopeuskestävyys. Opettaa sietämään kovassa vauhdissa syntyviä aineenvaihduntatuotteita ja jalostaa keskimatkojen nopeusominaisuuksia kestävyyspohjalle.",
-                notes: "Tässä saa ja pitää lopussa hapottaa raskaasti, mutta pakota itsesi pitämään lantio ylhäällä ja askel pyörivänä vauhdin hiipumisesta huolimatta.",
-                periodization: {
-                    half: "Viimeistelykauden harjoitus alimatkojen nopeuden ja reservin siirtämiseksi onnistuneesti puolimaratonille.",
-                    full: "Rakentaa vauhtireserviä ja terävöittää jalkojen hermotusta ennen pitkien maratonsimulaatioiden aloittamista."
-                },
-                prog: "Lisää toistoja tasaisesti 10-12 saakka ennen vauhdin nostoa.",
-                blocks: [{ d: 20, z: 'z1' }, { rep: 8, items: [{ d: 1.5, z: 'ana' }, { d: 2.5, z: 'rec' }] }, { d: 15, z: 'rec' }]
-            }
+      }
+    ]
+  },
+
+  {
+    title: "4) VO2max (kova aerobinen teho)",
+    subtitle: "Nostaa maksimaalista hapenottoa ja vauhtireserviä (1–2x/vko max, usein 1x)",
+    workouts: [
+      {
+        name: "1. 5 x 3 min",
+        struct: "20' lämpö + 5x3'/3' @ [vo2] + 10–15' jäähy",
+        goal: "Korkea aerobinen teho: paljon laatua, hallittava kokonaiskuorma.",
+        notes: "Pysy tasaisena: viimeinen veto ei saa olla romahdus. Palautus aktiivisena (kevyt hölkkä).",
+        periodization: {
+          half: "Rakennus- ja spesifissä vaiheessa 4–10 vkoa ennen kisaa.",
+          full: "Rakennusvaiheessa 8–14 vkoa ennen kisaa; lähellä maratonia harvemmin."
+        },
+        prog: "Lisää vetoja 5 → 6 → 7 tai lyhennä palautusta 3' → 2.5'.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 5, items: [{ d: 3, z: "vo2" }, { d: 3, z: "rec" }] },
+          { d: 12, z: "z1" }
         ]
-    }
+      },
+      {
+        name: "2. 4 x 4 min (Norwegian 4x4)",
+        struct: "20' lämpö + 4x4'/3' @ [vo2] + 10–15' jäähy",
+        goal: "Tehokas ja hyvin dokumentoitu VO2max-formaatti: pitkät vedot, kova mutta hallittu.",
+        notes: "Tavoite on pysyä ‘korkealla aerobisesti’ koko vedon ajan. Jos vauhti hyytyy > selvästi, kevennä seuraavaa vetoa.",
+        periodization: {
+          half: "Hyvä yleiskoneen nosto 4–10 vkoa ennen kisaa.",
+          full: "Rakennusvaiheessa; spesifissä vaiheessa yleensä MP/hm-vauhti tärkeämpi."
+        },
+        prog: "Lisää ensin laatua (tasaisuus), sitten 4x4' → 5x4' (harvoin tarpeen).",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 4, items: [{ d: 4, z: "vo2" }, { d: 3, z: "rec" }] },
+          { d: 12, z: "z1" }
+        ]
+      },
+      {
+        name: "3. 6 x 3 min / 2 min (lyhyempi palautus)",
+        struct: "20' lämpö + 6x3'/2' @ [vo2] + 10–15' jäähy",
+        goal: "Kasvattaa aikaa kovalla aerobisella teholla, kun palautukset ovat tarkoituksella vajaampia.",
+        notes: "Aloita konservatiivisesti: jos ekat vedot ovat liian kovia, happokuorma karkaa ja laatu hajoaa.",
+        periodization: {
+          half: "2–6 vkoa ennen kisaa (jos tehoja siedetään hyvin).",
+          full: "Harvoin tarpeen lähellä maratonia; sopii rakennusvaiheeseen."
+        },
+        prog: "Lisää vetoja 6 → 7 tai tee 2 sarjaa (esim. 2x4x3' pidemmällä sarjapalautuksella).",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 6, items: [{ d: 3, z: "vo2" }, { d: 2, z: "rec" }] },
+          { d: 12, z: "z1" }
+        ]
+      },
+      {
+        name: "4. 12–15 x 1 min / 1 min",
+        struct: "20' lämpö + 12–15x1'/1' @ [vo2] + 10–15' jäähy",
+        goal: "Kertyy paljon VO2-työtä hallitulla laktaattikuormalla (lyhyet pätkät).",
+        notes: "Pidä vauhti ‘kovana mutta toistettavana’. Jos viimeinen kolmannes hajoaa, aloitus oli liian kova tai toistoja liikaa.",
+        periodization: {
+          half: "Hyvä myös kilpailukaudella ylläpitävänä (lyhyt kokonaiskesto).",
+          full: "Rakennusvaiheessa 1x/2–3 vkoa; lähellä maratonia harvemmin."
+        },
+        prog: "Lisää ensin toistoja 12 → 15 ennen vauhdin nostoa.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 12, items: [{ d: 1, z: "vo2" }, { d: 1, z: "rec" }] },
+          { d: 12, z: "z1" }
+        ]
+      },
+      {
+        name: "5. Mäkivedot (VO2, rasitusohjattu)",
+        struct: "20' lämpö + 8–12 x 60s ylämäki @ [vo2]-tuntu / hölkkä alas + 10–15' jäähy",
+        goal: "Korkea aerobinen teho + lajivoima, usein pienemmällä iskutusriskillä kuin tasamaa.",
+        notes: "RPE ohjaa. Pidä askel napakkana, mutta älä ‘riko’ tekniikkaa. Palautus alas rauhassa.",
+        periodization: {
+          half: "Perus- ja rakennuskaudella erinomainen VO2-vaihtoehto.",
+          full: "Hyvä rakennusvaiheessa, erityisesti jos iskutus on herkkä."
+        },
+        prog: "Lisää toistoja 8 → 10 → 12 tai pidennä 60s → 75s (vain jos laatu säilyy).",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 10, items: [{ d: 1, z: "vo2" }, { d: 1.5, z: "rec" }] },
+          { d: 12, z: "z1" }
+        ]
+      },
+      {
+        name: "6. 30/30 (Billat-tyyli)",
+        struct: "20' lämpö + 2–3 x (10 x 30s @ [vo2] / 30s helppo) / 4' sarjapal. + 10–15' jäähy",
+        goal: "Maksimoi aika lähellä VO2max:aa lyhyillä, tiheillä vedoilla (hapenkulutus pysyy korkealla).",
+        notes: "Tämä tuntuu aluksi liian helpolta ja lopussa yllättävän kovalta. Pidä ‘kovat’ kontrolloituina, ettei muutu sprinttihapotukseksi.",
+        periodization: {
+          half: "Hyvä vaihtelu VO2-kauteen 3–8 vkoa ennen kisaa.",
+          full: "Rakennusvaiheessa; lähellä maratonia vain ylläpitävänä ja pienempänä."
+        },
+        prog: "Lisää ensin sarjan toistoja 10 → 12, vasta sitten lisää sarjoja.",
+        blocks: [
+          { d: 20, z: "z1" },
+          {
+            rep: 2,
+            items: [
+              { rep: 10, items: [{ d: 0.5, z: "vo2" }, { d: 0.5, z: "rec" }] },
+              { d: 4, z: "rec" }
+            ]
+          },
+          { d: 12, z: "z1" }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "5) Nopeus & hermotus (ei hapotusta haeta)",
+    subtitle: "Juoksutalous, askelrytmi, voimantuoton ‘terä’ (lyhyenä, hyvin palautuksin)",
+    workouts: [
+      {
+        name: "1. Rullaukset (strides)",
+        struct: "20–40' @ [z1] + 6–10 x 20s rullaus / 90s–2' helppo",
+        goal: "Parantaa neuromuskulaarista koordinaatiota ja ylläpitää nopeusominaisuuksia kevyesti.",
+        notes: "Lopeta ennen kuin tekniikka hajoaa. Tämä ei ole anaerobinen treeni.",
+        periodization: {
+          half: "Ympäri vuoden; erityisesti peruskuntokaudella.",
+          full: "Ympäri vuoden; hyödyllinen maratonblokissa askelnopeuden ylläpitoon."
+        },
+        prog: "Lisää rullauksia 6 → 8 → 10. Pidä palautus pitkässä päässä.",
+        blocks: [
+          { d: 30, z: "z1" },
+          { rep: 8, items: [{ d: 0.33, z: "ana" }, { d: 1.75, z: "rec" }] },
+          { d: 10, z: "z1" }
+        ]
+      },
+      {
+        name: "2. Lyhyet mäkisprintit (maksimivoima/koordinaatio)",
+        struct: "20' lämpö + 8–10 x 10–12s jyrkkä mäki @ [ana] / 2–3' täysi palautus + 10' jäähy",
+        goal: "Neuromuskulaarinen ärsyke: korkea voimantuotto pienellä kokonaisvolyymilla.",
+        notes: "Tärkein sääntö: täysi palautus. Jos alkaa hapottaa, palautus on liian lyhyt tai veto liian pitkä.",
+        periodization: {
+          half: "Peruskuntokaudella 1x/vko tai 1x/2 vko.",
+          full: "Peruskuntokaudella ja rakennusvaiheessa; ei yleensä taperin viimeisellä viikolla."
+        },
+        prog: "Lisää ensin toistoja 6 → 8 → 10. Pidä vedot lyhyinä.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 8, items: [{ d: 0.17, z: "ana" }, { d: 2.5, z: "rec" }] },
+          { d: 10, z: "z1" }
+        ]
+      },
+      {
+        name: "3. 12 x 200m (rentona kovaa)",
+        struct: "20' lämpö + 12x200m / 200m hölkkä @ [ana] + 10–15' jäähy",
+        goal: "Juoksutalous ja askelrytmi kovemmissa nopeuksissa ilman suurta metaboolista kuormaa.",
+        notes: "Juokse rennosti, ei ‘puristamalla’. Voit tehdä myös ajan mukaan: ~35–55s / 200m tasosta riippuen.",
+        periodization: {
+          half: "Ylläpitona ympäri vuoden; hyvänä ‘kevyenä terävöityksenä’.",
+          full: "Hyödyllinen etenkin, jos maratonvauhti alkaa tuntua ‘tukkoiselta’."
+        },
+        prog: "Pidennä ensin palautusta tarvittaessa, sitten lisää toistoja 12 → 15.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 12, items: [{ d: 0.75, z: "ana" }, { d: 1.5, z: "rec" }] },
+          { d: 12, z: "z1" }
+        ]
+      },
+      {
+        name: "4. 8–12 x 400m (nopeuskestävyys, hallittu)",
+        struct: "20' lämpö + 8–12x400m / 2–3' helppo @ [ana]- + 10–15' jäähy",
+        goal: "Ylläpitää vauhtireserviä ja juoksutaloutta kovemmissa vauhdeissa.",
+        notes: "Tämä voi helposti lipsua ‘liian kovaksi’. Pidä tavoite: tasaiset vedot, tekniikka ehjänä. Jos hyytyy, lopeta sarja.",
+        periodization: {
+          half: "Spesifissä vaiheessa (2–6 vkoa) tai kilpailukaudella ylläpitävänä.",
+          full: "Rakennusvaiheessa; lähellä maratonia harvoin ja kevennettynä."
+        },
+        prog: "Lisää toistoja 8 → 10 → 12 ennen vauhdin nostoa.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 8, items: [{ d: 1.5, z: "ana" }, { d: 2.5, z: "rec" }] },
+          { d: 12, z: "z1" }
+        ]
+      },
+      {
+        name: "5. 10 x 30s (vain kokeneille, ‘sprint interval’)",
+        struct: "20' lämpö + 8–12x30s @ [ana] / 3' helppo + 10–15' jäähy",
+        goal: "Hyvin kova ärsyke anaerobiselle kapasiteetille ja vauhtireserville (suuri kokonaisstressi).",
+        notes: "Korkea loukkaantumis- ja palautumisriski. Ei tarpeellinen useimmille HM/Maraton-juoksijoille. Jos teet: pidä määrä pienenä ja harvoin (esim. 1x/3–6 vkoa).",
+        periodization: {
+          half: "Lähinnä 5–10 km painotteisille; HM:lle korkeintaan satunnaisena vauhtireservinä.",
+          full: "Maratonvalmistautumisessa harvoin perusteltu; jos tehdään, niin kaukana kisasta."
+        },
+        prog: "Aloita 6–8 toistolla. Lisää vasta kun palautuminen on varmaa.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 10, items: [{ d: 0.5, z: "ana" }, { d: 3, z: "rec" }] },
+          { d: 12, z: "z1" }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "6) Kilpailuspesifit (Puolimaraton / Maraton)",
+    subtitle: "Vauhdin, taloudellisuuden ja energiansaannin siirto kilpailutilanteeseen",
+    workouts: [
+      {
+        name: "1. Puolimaratonvauhtinen perussetti",
+        struct: "20' lämpö + 3 x 12' @ [z2]+ (HM-vauhti) / 3' helppo + 10–15' jäähy",
+        goal: "Spesifi kestävyys HM-vauhdilla: korkea aerobinen työ, hallittu kuorma.",
+        notes: "HM-vauhti on tyypillisesti alle kynnyksen tai kynnyksen tuntumassa yksilöstä riippuen. Tärkeää on tasaisuus, ei maksimi.",
+        periodization: {
+          half: "Keskeinen 2–6 vkoa ennen kisaa.",
+          full: "Toimii rakennusvaiheessa, mutta maratonspesifissä MP yleensä tärkeämpi."
+        },
+        prog: "Pidennä vetoja 10' → 12' → 15' tai lisää 3 → 4 vetoa.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 3, items: [{ d: 12, z: "z2" }, { d: 3, z: "rec" }] },
+          { d: 12, z: "z1" }
+        ]
+      },
+      {
+        name: "2. Maratonvauhti (MP) blokkeina",
+        struct: "20' lämpö + 3 x 20' @ [mp] / 5' helppo + 10' jäähy",
+        goal: "Harjoittaa kilpailuvauhdin taloudellisuutta ja ‘kestävää’ tehoa (spesifi kuormitus).",
+        notes: "MP ei saa lipsua kynnykseksi. Jos syke drift-aa voimakkaasti, kevennä tai lyhennä blokkeja.",
+        periodization: {
+          half: "Ei yleensä tarpeen; vaihtoehtona z2-blokit.",
+          full: "Keskeinen 3–8 vkoa ennen maratonia (yksilön mukaan)."
+        },
+        prog: "Lisää MP-aikaa 2x20' → 3x20' → 2x30'.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 3, items: [{ d: 20, z: "mp" }, { d: 5, z: "rec" }] },
+          { d: 10, z: "z1" }
+        ]
+      },
+      {
+        name: "3. Progressiivinen spesifi lenkki",
+        struct: "80–120' siten, että 40' @ [z1] + 30–40' @ [z2] + 10–20' @ [mp]",
+        goal: "Opettaa nostamaan tehoa asteittain ja ylläpitämään taloudellisuutta väsymyksen kasvaessa.",
+        notes: "Tämä on ‘kova’ pitkän lenkin muoto. Jos kokonaispalautuminen kärsii, palaa helpompaan pitkään.",
+        periodization: {
+          half: "Hyvä 2–5 vkoa ennen kisaa (viimeinen 10–15' HM-vauhdin tuntumalla).",
+          full: "Hyvä 3–6 vkoa ennen maratonia, kun MP on jo löytynyt."
+        },
+        prog: "Pidennä ensin z2-osuutta, sitten MP-loppua (max 20').",
+        blocks: [{ d: 40, z: "z1" }, { d: 35, z: "z2" }, { d: 15, z: "mp" }]
+      },
+      {
+        name: "4. Kilpailunomainen herättely (taperiin)",
+        struct: "15–20' lämpö + 6x2' @ [lt]/[z2]+ / 2' helppo + 10' jäähy",
+        goal: "Pitää hermoston ja aerobisen tehon ‘auki’ samalla kun kokonaiskuorma pysyy pienenä.",
+        notes: "Tämä ei ole ‘kunnon koetus’. Vedot hallittuja ja tekniikka ehjänä.",
+        periodization: {
+          half: "5–8 päivää ennen kisaa (yksilön mukaan).",
+          full: "7–12 päivää ennen kisaa (yksilön mukaan)."
+        },
+        prog: "Taperissa ei prog-ajatusta: pidä lyhyenä, tarvittaessa 4–5 vetoa.",
+        blocks: [
+          { d: 20, z: "z1" },
+          { rep: 6, items: [{ d: 2, z: "lt" }, { d: 2, z: "rec" }] },
+          { d: 10, z: "z1" }
+        ]
+      }
+    ]
+  },
+
+  {
+    title: "7) Testit & ohjaavat treenit",
+    subtitle: "Tehoalueiden arviointi yksinkertaisesti (ei labraa pakko olla)",
+    workouts: [
+      {
+        name: "1. 30 min kynnystesti (kenttä)",
+        struct: "20' lämpö + 30' tasainen kova @ [lt] (viimeiset 20' tasaisin) + 10' jäähy",
+        goal: "Arvioi kynnyksen tehoalue (LT2-läheinen) ja antaa ‘ankkurin’ tempo-/cruise-treeneihin.",
+        notes: "Aloita maltilla ja pyri tasaisuuteen. Testi rasittaa: tee harvoin (esim. 1x/6–10 vkoa).",
+        periodization: {
+          half: "Peruskunnon jälkeen tai rakennusvaiheen alussa.",
+          full: "Peruskunnon jälkeen; ei lähellä maratonia, jos palautuminen on kriittistä."
+        },
+        prog: "Ei progressio: testi on mittaus. Seuraavissa treeneissä säädä kynnysvauhtia tuloksen mukaan.",
+        blocks: [{ d: 20, z: "z1" }, { d: 30, z: "lt" }, { d: 10, z: "z1" }]
+      },
+      {
+        name: "2. 5 km testijuoksu (vauhtireservi)",
+        struct: "20' lämpö + 5 km tasainen kova (kilpailunomainen) + 10–15' jäähy",
+        goal: "Arvioi vauhtireserviä ja antaa suunnan VO2/ana-treeneihin (vauhtialueet).",
+        notes: "Tee kuin kilpailu: tasainen aloitus, loppua kohti kiristys. Ei usein (1x/8–12 vkoa).",
+        periodization: {
+          half: "Hyvä rakennusvaiheessa tai kilpailukauden alussa.",
+          full: "Hyvä kaukana maratonista; lähellä maratonia mieluummin lyhyempi ‘tune-up’."
+        },
+        prog: "Ei progressio: testi. Käytä tulosta treenialueiden päivittämiseen.",
+        blocks: [{ d: 20, z: "z1" }, { d: 22, z: "vo2" }, { d: 12, z: "z1" }]
+      }
+    ]
+  }
 ];
+
+// Export (sekä Node että browser) — ei riko peruskäyttöä, mutta helpottaa hyödyntämistä.
+if (typeof module !== "undefined") module.exports = library;
+if (typeof window !== "undefined") window.library = library;
